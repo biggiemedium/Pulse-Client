@@ -1,6 +1,7 @@
 package mod;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
@@ -16,8 +17,6 @@ import javax.swing.*;
 
 
 public class Game {
-
-    private int counter;
 
     public void OnScreen() throws IOException {
         JFrame frame = new JFrame();
@@ -113,7 +112,7 @@ public class Game {
                 }
             }
         });
-        final JMenuItem sprint = new JMenuItem("Sprint");
+        JMenuItem sprint = new JMenuItem("Sprint");
         b.add(sprint);
         sprint.addActionListener(new ActionListener() {
             @Override
@@ -149,6 +148,32 @@ public class Game {
             }
         });
 
+        JMenuItem autowalk = new JMenuItem("Auto Walk");
+        b.add(autowalk);
+        autowalk.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Thread runable = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Robot r = new Robot();
+                            while(true) {
+                                r.delay(2000);
+                                r.keyPress(KeyEvent.VK_W);
+
+                            }
+                        } catch (AWTException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+                runable.start();
+            }
+        });
+
 
         JMenuItem Presence = new JMenuItem("Discord RPC");
         b.add(Presence);
@@ -158,6 +183,23 @@ public class Game {
 
                 RichPresence RPC = new RichPresence();
                 RPC.Status();
+
+            }
+        });
+
+        JMenuItem cancel = new JMenuItem("Remove");
+        b.add(cancel);
+        cancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(e.getSource().equals(cancel)) {
+                    sprint.removeActionListener(this);
+                    brightness.removeActionListener(this);
+                    autowalk.removeActionListener(this);
+
+
+                }
 
             }
         });

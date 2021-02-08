@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Loading {
 
@@ -10,6 +12,7 @@ public class Loading {
         JLabel loading = new JLabel("Loading... ");
         JProgressBar progressBar = new JProgressBar();
 
+
         panel.add(progressBar);
         panel.add(loading);
 
@@ -18,23 +21,29 @@ public class Loading {
         progressBar.setMinimum(0);
         progressBar.setMaximum(100);
 
-        progressBar.setSize(150, 30);
-        progressBar.setLocation(25, 100);
 
-        f.add(panel);
-        f.setLocation(800, 300);
-        f.setBackground(Color.white);
-        f.setUndecorated(true);
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.setSize(200, 200);
-        f.setVisible(true);
 
-        long start = System.currentTimeMillis();
-        Thread.sleep(2000);
+            progressBar.setSize(150, 30);
+            progressBar.setLocation(25, 100);
 
-        progressBar.setValue(100);
+            f.add(panel);
+            f.setLocation(800, 300);
+            f.setBackground(Color.white);
+            f.setUndecorated(true);
+            f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            f.setSize(200, 200);
+            f.setVisible(true);
 
-        f.setVisible(false);
-        progressBar.setVisible(false);
+            long start = System.currentTimeMillis();
+            Thread.sleep(2000);
+
+            progressBar.setValue(100);
+
+
+            f.setVisible(false);
+            progressBar.setVisible(false);
+
+
     }
 }
+

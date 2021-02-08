@@ -30,8 +30,8 @@ public class Enter {
             public void actionPerformed(final ActionEvent e) {
                 final String site = "https://phasmophobia.fandom.com/wiki/Main_Page";
                 try {
-                    final URL phaswik = new URL(site);
-                    final Desktop dt = Desktop.getDesktop();
+                    URL phaswik = new URL(site);
+                    Desktop dt = Desktop.getDesktop();
                     dt.browse(phaswik.toURI());
                 }
                 catch (URISyntaxException ex) {
@@ -70,7 +70,13 @@ public class Enter {
                 main.setVisible(false);
 
                 Game g = new Game();
-                g.OnScreen();
+                try {
+                    g.OnScreen();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+                System.out.println("Game class running");
 
             }
         });

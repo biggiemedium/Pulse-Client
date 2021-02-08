@@ -14,7 +14,8 @@ public class Main {
         Loading load = new Loading();
         load.Loading();
 
-        Thread.sleep(100);
+        Thread t = null;
+        t.sleep(100);
 
             String os = System.getProperty("os.name");
             String line;
@@ -42,6 +43,7 @@ public class Main {
             }
 
             input.close();
+            t.interrupted();
 
             if (pidInfo.contains("Phasmophobia")) {
                 System.out.println("Phasmophobia is running");
