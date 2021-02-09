@@ -1,16 +1,19 @@
 package mod;
 
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion;
 
 import java.net.URL;
-import java.util.Random;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
@@ -18,11 +21,14 @@ import javax.swing.*;
 
 public class Game {
 
-    public void OnScreen() throws IOException {
-        JFrame frame = new JFrame();
-        JPanel p = new JPanel();
-        JMenuBar jmb = new JMenuBar();
-        JMenu b = new JMenu("MOD");
+    private final Map<ActionListener, JMenuItem> menuItems = new HashMap<>();
+    private final JFrame frame = new JFrame();
+    private final JPanel p = new JPanel();
+    private final JMenuBar jmb = new JMenuBar();
+    private final JMenu b = new JMenu("MOD");
+
+    public void OnScreen() throws AWTException {
+
         p.add(jmb);
         p.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         frame.add(p);
@@ -32,7 +38,7 @@ public class Game {
         frame.setAlwaysOnTop(true);
         frame.setUndecorated(true);
         frame.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
-        frame.setDefaultCloseOperation(2);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
         JFrame toggled = new JFrame();
         JPanel screen = new JPanel();
@@ -46,192 +52,167 @@ public class Game {
         toggled.setUndecorated(true);
         toggled.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         toggled.setAlwaysOnTop(true);
-        toggled.setDefaultCloseOperation(3);
+        toggled.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         toggled.setVisible(true);
         jmb.add(b);
         jmb.setBorderPainted(true);
         jmb.setBackground(Color.gray);
         JMenuItem brightness = new JMenuItem("Brightness");
-        b.add(brightness);
-        brightness.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Thread light = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        //boolean lights = false;
-
-                        JFrame brighton = new JFrame();
-                        JLabel bl = new JLabel("Brightness");
-                        bl.setForeground(Color.WHITE);
-                        brighton.add(bl);
-                        brighton.setLocation(30, 20);
-                        brighton.setUndecorated(true);
-                        brighton.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
-                        brighton.setSize(100, 50);
-                        brighton.setDefaultCloseOperation(3);
-                        brighton.setVisible(true);
-                        final Random rd = new Random();
-                        try {
-                            final Robot ro = new Robot();
-                            final int Randomnum = rd.nextInt(451) + 50;
-                            while (true) {
-                                ro.delay(Randomnum);
-                                ro.keyPress(84);
-                                ro.keyRelease(84);
-                            }
-                        }
-                        catch (AWTException awtException) {
-                            awtException.printStackTrace();
-                        }
 
 
+        ActionListener brightnessfunc = e -> {
+            Thread light = new Thread(() -> {
 
-                    }
-                });
-                light.start();
-            }
-        });
-        JMenuItem wiki = new JMenuItem("Wiki");
-        b.add(wiki);
-        wiki.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final String site = "https://phasmophobia.fandom.com/wiki/Main_Page";
+                //boolean lights = false;
+
+                JFrame brighton = new JFrame();
+                JLabel bl = new JLabel("Brightness");
+                bl.setForeground(Color.WHITE);
+                brighton.add(bl);
+                brighton.setLocation(30, 20);
+                brighton.setUndecorated(true);
+                brighton.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+                brighton.setSize(100, 50);
+                brighton.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                brighton.setVisible(true);
+                final Random rd = new Random();
                 try {
-                    final URL phaswik = new URL(site);
-                    final Desktop dt = Desktop.getDesktop();
-                    dt.browse(phaswik.toURI());
-                }
-                catch (URISyntaxException ex) {
-                    Logger.getLogger(ManagementAssertion.Setting.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                catch (IOException ex2) {
-                    Logger.getLogger(ManagementAssertion.Setting.class.getName()).log(Level.SEVERE, null, ex2);
-                }
-            }
-        });
-        JMenuItem sprint = new JMenuItem("Sprint");
-        b.add(sprint);
-        sprint.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                JFrame spr = new JFrame();
-                JLabel tit = new JLabel("Sprint");
-
-                tit.setForeground(Color.WHITE);
-                spr.add(tit);
-                spr.setLocation(30, -20);
-                spr.setSize(100, 100);
-                spr.setUndecorated(true);
-                spr.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
-                spr.setAlwaysOnTop(true);
-                spr.setDefaultCloseOperation(3);
-                spr.setVisible(true);
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Robot r = new Robot();
-                            while (true) {
-                                r.delay(2000);
-                                r.keyPress(16);
-                            }
-                        }
-                        catch (AWTException awtException) {
-                            awtException.printStackTrace();
-                        }
+                    final Robot ro = new Robot();
+                    final int Randomnum = rd.nextInt(451) + 50;
+                    while (true) {
+                        ro.delay(Randomnum);
+                        ro.keyPress(84);
+                        ro.keyRelease(84);
                     }
-                });
-                t.start();
+                }
+                catch (AWTException awtException) {
+                    awtException.printStackTrace();
+                }
+
+
+
+            });
+            light.start();
+        };
+        setupJComponent(brightness, brightnessfunc);
+
+        JMenuItem wiki = new JMenuItem("Wiki");
+        wiki.addActionListener(e -> {
+            final String site = "https://phasmophobia.fandom.com/wiki/Main_Page";
+            try {
+                final URL phaswik = new URL(site);
+                final Desktop dt = Desktop.getDesktop();
+                dt.browse(phaswik.toURI());
+            }
+            catch (URISyntaxException | IOException ex) {
+                Logger.getLogger(ManagementAssertion.Setting.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+
+        AtomicBoolean isCancelled = new AtomicBoolean(false);
+        final Robot r = new Robot();
+        final ExecutorService scheduler = Executors.newFixedThreadPool(2);
+        final KeyHolder[] vkshift = new KeyHolder[1];
+        final KeyHolder[] vkw = new KeyHolder[1];
+        vkshift[0] = new KeyHolder(KeyEvent.VK_SHIFT, r);
+        vkw[0] = new KeyHolder(KeyEvent.VK_W, r);
+
+
+        JMenuItem sprint = new JMenuItem("Sprint");
+        ActionListener sprintlistener = e -> {
+            JFrame spr = new JFrame();
+            JLabel tit = new JLabel("Sprint");
+
+            tit.setForeground(Color.WHITE);
+            spr.add(tit);
+            spr.setLocation(30, -20);
+            spr.setSize(100, 100);
+            spr.setUndecorated(true);
+            spr.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+            spr.setAlwaysOnTop(true);
+            spr.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            spr.setVisible(true);
+
+            scheduler.execute(vkshift[0]);
+            //16
+
+
+        };
+        setupJComponent(sprint, sprintlistener);
 
         JMenuItem autowalk = new JMenuItem("Auto Walk");
-        b.add(autowalk);
-        autowalk.addActionListener(new ActionListener() {
+        ActionListener autowalklistener = e -> {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+           //vk_w
+            scheduler.execute(vkw[0]);
 
-                Thread runable = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Robot r = new Robot();
-                            while(true) {
-                                r.delay(2000);
-                                r.keyPress(KeyEvent.VK_W);
 
-                            }
-                        } catch (AWTException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                });
-                runable.start();
-            }
-        });
+        };
+        setupJComponent(autowalk, autowalklistener);
 
 
         JMenuItem Presence = new JMenuItem("Discord RPC");
-        b.add(Presence);
-        Presence.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        ActionListener DiscordRPC = e -> {
 
-                RichPresence RPC = new RichPresence();
-                RPC.Status();
+            RichPresence RPC = new RichPresence();
+            RPC.Status();
 
-            }
-        });
+        };
+        setupJComponent(Presence, DiscordRPC);
 
         JMenuItem cancel = new JMenuItem("Remove");
         b.add(cancel);
-        cancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        cancel.addActionListener(e -> {
 
-                if(e.getSource().equals(cancel)) {
-                    sprint.removeActionListener(this);
-                    brightness.removeActionListener(this);
-                    autowalk.removeActionListener(this);
-
-
-                }
-
+            if(!isCancelled.get()) {
+                menuItems.keySet().forEach(actionListener -> menuItems.get(actionListener).removeActionListener(actionListener));
+                vkshift[0].stopHolding();
+                vkw[0].stopHolding();
+                isCancelled.set(true);
+            } else {
+                menuItems.keySet().forEach(actionListener -> menuItems.get(actionListener).addActionListener(actionListener));
+                vkshift[0] = new KeyHolder(KeyEvent.VK_SHIFT, r);
+                vkw[0] = new KeyHolder(KeyEvent.VK_W, r);
+                scheduler.execute(vkshift[0]);
+                isCancelled.set(false);
             }
+
+
         });
 
         JMenuItem exit = new JMenuItem("Exit");
         b.add(exit);
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                System.out.println("Mod ended");
+        exit.addActionListener(e -> {
+            System.out.println("Mod ended");
 
-                Robot shiftup = null;
-                try {
-                    shiftup = new Robot();
-                } catch (AWTException awtException) {
-                    awtException.printStackTrace();
-                }
-                shiftup.keyRelease(16);
 
-                try {
-                    Robot lightoff = new Robot();
+            try {
+                vkshift[0].stopHolding();
+                Robot lightoff = new Robot();
 
-                    lightoff.keyRelease(84);
-                } catch (AWTException awtException) {
-                    awtException.printStackTrace();
-                }
+                lightoff.keyRelease(84);
 
-                System.exit(0);
+
+
+            } catch (AWTException awtException) {
+                awtException.printStackTrace();
             }
+
+
+            System.exit(0);
+
         });
+
+
+    }
+
+    private void setupJComponent(JMenuItem jMenuItem, ActionListener actionListener) {
+        menuItems.put(actionListener, jMenuItem);
+        b.add(jMenuItem);
+        jMenuItem.addActionListener(actionListener);
 
 
 
     }
+
 }

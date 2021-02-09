@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Loading {
 
@@ -34,14 +32,15 @@ public class Loading {
             f.setSize(200, 200);
             f.setVisible(true);
 
-            long start = System.currentTimeMillis();
-            Thread.sleep(2000);
+
+            Thread.sleep(200);
 
             progressBar.setValue(100);
 
 
             f.setVisible(false);
             progressBar.setVisible(false);
+
 
 
     }

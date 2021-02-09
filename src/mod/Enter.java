@@ -1,15 +1,15 @@
 package mod;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion;
-import java.awt.Desktop;
+
 import java.net.URL;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -72,8 +72,8 @@ public class Enter {
                 Game g = new Game();
                 try {
                     g.OnScreen();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                } catch (AWTException awtException) {
+                    awtException.printStackTrace();
                 }
 
                 System.out.println("Game class running");
