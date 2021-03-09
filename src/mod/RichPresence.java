@@ -10,7 +10,7 @@ public class RichPresence {
 
         DiscordRPC lib = DiscordRPC.INSTANCE;
         DiscordRichPresence presence = new DiscordRichPresence();
-        String applicationId = "420696942069696969";
+        String applicationId = "420696942069696969"; // add new ID later
         String steamId       = "";
 
         DiscordEventHandlers handlers = new DiscordEventHandlers();
